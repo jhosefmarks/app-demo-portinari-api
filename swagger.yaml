@@ -1,0 +1,242 @@
+swagger: '2.0'
+schemes:
+  - http
+  - https
+host: localhost:8083
+basePath: /sample-api/v1
+info:
+  version: 0.0.1
+  title: Sample API
+  description: Sample for developers
+  termsOfService: localhost:8083/sample-api/v1/terms
+  contact:
+    name: Jhosef Marks de Carvalho
+    url: https://github.com/jhosefmarks/app-demo-portinari-api
+    email: contact@sample.com
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  '/customers':
+    post:
+      summary: Add customer.
+      description: Add a new customer.
+      operationId: newCustomer
+      parameters:
+        - in: body
+          name: customer
+          schema:
+            $ref: '#/definitions/customer'
+      responses:
+        201:
+          description: Resource saved successfully.
+          schema:
+            $ref: '#/definitions/customer'
+        400:
+          description: Bad request, invalid resource.
+        500:
+          description: Internal error.
+    get:
+      summary: Get all customers.
+      description: Get all customers.
+      operationId: getAllCustomer
+      parameters:
+        - in: query
+          name: page
+          description: Page
+          type: integer
+          format: int32
+          default: 1
+          required: false
+          minimum: 1
+        - in: query
+          name: pageSize
+          description: Items per page
+          type: integer
+          format: int32
+          default: 10
+          required: false
+        - in: query
+          name: order
+          description: Order of items
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+          required: false
+        - in: query
+          name: fields
+          description: List of fields that must be returned.
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+          required: false
+        - in: query
+          name: search
+          description: Term for search
+          type: string
+          required: false
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/definitions/customer'
+              hasNext:
+                type: boolean
+        400:
+          description: Bad request.
+        404:
+          description: Not found.
+        500:
+          description: Internal error.
+  '/customers/{id}':
+    get:
+      summary: Get customer.
+      description: Get customer.
+      operationId: getCustomer
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/customer'
+        404:
+          description: Not found.
+        500:
+          description: Internal error.
+    put:
+      summary: Update customer.
+      description: Update customer.
+      operationId: updateCustomer
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+        - in: body
+          name: customer
+          schema:
+            $ref: '#/definitions/customer'
+      responses:
+        200:
+          description: Resource saved successfully.
+          schema:
+            $ref: '#/definitions/customer'
+        400:
+          description: Bad request.
+        404:
+          description: Not found.
+        500:
+          description: Internal error.
+    delete:
+      summary: Delete customer.
+      description: Delete customer.
+      operationId: deleteCustomer
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+      responses:
+        204:
+          description: Resource removed successfully.
+        404:
+          description: Not found.
+        500:
+          description: Internal error.
+definitions:
+  customer:
+    type: object
+    properties:
+      id:
+        type: number
+        example: 1547660131698
+      name:
+        type: string
+        example: 'Jhon Martin'
+      birthdate:
+        type: string
+        format: date-time
+        description: Format E8601DZw.d (yyyy-mm-ddThh:mm:ss+|-hh:mm)
+        example: '2019-01-16T00:00:00-00:00'
+      genre:
+        type: integer
+        format: int32
+        enum:
+          - Female
+          - Male
+          - Other
+      email:
+        type: string
+        format: email
+        example: 'user@example.com'
+      city:
+        type: string
+        example: 'Joinville'
+      nickname:
+        type: string
+      nationality:
+        type: string
+        example: 'Brazilian'
+      birthPlace:
+        type: string
+        example: 'São Paulo'
+      graduation:
+        type: string
+        example: 'College'
+      father:
+        type: string
+        example: 'Papai'
+      mother:
+        type: string
+        example: 'Mamãe'
+      street:
+        type: string
+        example: 'Santos Dumont'
+      country:
+        type: string
+        example: 'Brazil'
+      docCpf:
+        type: string
+        maxLength: 11
+        minLength: 11
+        example:  12312312312
+      status:
+        type: string
+        enum:
+          - 'Active'
+          - 'Inactive'
+      dependents:
+        type: array
+        items:
+          $ref: '#/definitions/dependent'
+      contacts:
+        type: array
+        items:
+          $ref: '#/definitions/contact'
+  contact:
+    type: object
+    properties:
+      name:
+        type: string
+        example: 'Mary'
+  dependent:
+    type: object
+    properties:
+      name:
+        type: string
+        example: 'Mary'
