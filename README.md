@@ -48,3 +48,16 @@ DELETE https://app-demo-portinari-api.herokuapp.com/api/samples/v1/people
 ```
 DELETE https://app-demo-portinari-api.herokuapp.com/api/samples/v1/people/:id
 ```
+
+## List some cities of Brazil
+
+```
+GET https://app-demo-portinari-api.herokuapp.com/api/samples/v1/cities
+```
+
+## List all states of Brazil
+
+```
+GET https://app-demo-portinari-api.herokuapp.com/api/samples/v1/states
+```
+

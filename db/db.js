@@ -489,6 +489,56 @@ const people = [
   }
 ];
 
+const states = [
+  { "uf": "AC", "name": "Acre" },
+  { "uf": "AL", "name": "Alagoas" },
+  { "uf": "AM", "name": "Amazonas" },
+  { "uf": "AP", "name": "Amapá" },
+  { "uf": "BA", "name": "Bahia" },
+  { "uf": "CE", "name": "Ceará" },
+  { "uf": "DF", "name": "Distrito Federal" },
+  { "uf": "ES", "name": "Espírito Santo" },
+  { "uf": "GO", "name": "Goiás" },
+  { "uf": "MA", "name": "Maranhão" },
+  { "uf": "MG", "name": "Minas Gerais" },
+  { "uf": "MS", "name": "Mato Grosso do Sul" },
+  { "uf": "MT", "name": "Mato Grosso" },
+  { "uf": "PA", "name": "Pará" },
+  { "uf": "PB", "name": "Paraíba" },
+  { "uf": "PE", "name": "Pernambuco" },
+  { "uf": "PI", "name": "Piauí" },
+  { "uf": "PR", "name": "Paraná" },
+  { "uf": "RJ", "name": "Rio de Janeiro" },
+  { "uf": "RN", "name": "Rio Grande do Norte" },
+  { "uf": "RO", "name": "Rondônia" },
+  { "uf": "RR", "name": "Roraima" },
+  { "uf": "RS", "name": "Rio Grande do Sul" },
+  { "uf": "SC", "name": "Santa Catarina" },
+  { "uf": "SE", "name": "Sergipe" },
+  { "uf": "SP", "name": "São Paulo" },
+  { "uf": "TO", "name": "Tocantins" },
+];
+
+const cities = [
+  { "ibge": "1501402", "state": "PA", "name": "Belém" },
+  { "ibge": "4201307", "state": "SC", "name": "Araquari" },
+  { "ibge": "3509502", "state": "SP", "name": "Campinas" },
+  { "ibge": "4106902", "state": "PR", "name": "Curitiba" },
+  { "ibge": "4209102", "state": "SC", "name": "Joinville" },
+  { "ibge": "3534401", "state": "SP", "name": "Osasco" },
+  { "ibge": "3304557", "state": "RJ", "name": "Rio de Janeiro" },
+  { "ibge": "4215802", "state": "SC", "name": "São Bento do Sul" },
+  { "ibge": "4216206", "state": "SC", "name": "São Francisco do Sul" },
+  { "ibge": "3550308", "state": "SP", "name": "São Paulo" },
+  { "ibge": "3504008", "state": "SP", "name": "Assis" },
+  { "ibge": "3106200", "state": "MG", "name": "Belo Horizonte" },
+  { "ibge": "5208707", "state": "GO", "name": "Goiânia" },
+  { "ibge": "4314902", "state": "RS", "name": "Porto Alegre" },
+  { "ibge": "3543402", "state": "SP", "name": "Ribeirão Preto" }
+];
+
 module.exports = {
-  people: people
+  people: people,
+  states: states,
+  cities: cities
 };
