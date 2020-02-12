@@ -10,10 +10,11 @@ module.exports  = function(app) {
   app.get(`${urlApiResource}`, (req, res) => {
     log(`GET ${req.url}`); log(req.query);
 
+    const search = req.query.search || req.query.filter;
     let records = sql.select(tableName);
 
-    if (req.query.search) {
-      records = sql.like(records, 'name', req.query.search);
+    if (search) {
+      records = sql.like(records, 'name', search);
 
       records = utilsApi.removeDuplicates(records, 'uf');
     }
@@ -35,10 +36,11 @@ module.exports  = function(app) {
   app.get(`${urlApiResource}/data-source`, (req, res) => {
     log(`GET ${req.url}`); log(req.query);
 
+    const search = req.query.search || req.query.filter;
     let records = sql.select(tableName);
 
-    if (req.query.search) {
-      records = sql.like(records, 'name', req.query.search);
+    if (search) {
+      records = sql.like(records, 'name', search);
 
       records = utilsApi.removeDuplicates(records, 'uf');
     }
