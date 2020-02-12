@@ -3,11 +3,11 @@ const log = require('../../utils/utils');
 const utilsApi = require('./utils');
 
 const tableName = 'cities';
-const urlApiBase = `${utilsApi.urlApiBase}/${tableName}`;
+const urlApiResource = `${utilsApi.urlApiBase}/${tableName}`;
 
 module.exports  = function(app) {
 
-  app.get(`${urlApiBase}`, (req, res) => {
+  app.get(`${urlApiResource}`, (req, res) => {
     log(`GET ${req.url}`); log(req.query);
 
     let records = sql.select(tableName);
@@ -25,6 +25,33 @@ module.exports  = function(app) {
     records = records.map(city => ({
       ibge: city.ibge,
       name: city.name,
+      state: city.state
+    }));
+
+    res.send({
+      hasNext: false,
+      items: records
+    });
+  });
+
+  app.get(`${urlApiResource}/data-source`, (req, res) => {
+    log(`GET ${req.url}`); log(req.query);
+
+    let records = sql.select(tableName);
+
+    if (req.query.search) {
+      records = sql.like(records, 'name', req.query.search);
+
+      records = utilsApi.removeDuplicates(records, 'ibge');
+    }
+
+    if (req.query.name) { records = sql.like(records, 'name', req.query.name); }
+    if (req.query.ibge) { records = sql.like(records, 'ibge', req.query.ibge); }
+    if (req.query.state) { records = sql.like(records, 'state', req.query.state); }
+
+    records = records.map(city => ({
+      value: city.ibge,
+      label: city.name,
       state: city.state
     }));
 

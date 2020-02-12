@@ -3,11 +3,11 @@ const log = require('../../utils/utils');
 const utilsApi = require('./utils');
 
 const tableName = 'people';
-const urlApiBase = `${utilsApi.urlApiBase}/${tableName}`;
+const urlApiResource = `${utilsApi.urlApiBase}/${tableName}`;
 
 module.exports  = function(app) {
 
-  app.get(`${urlApiBase}`, (req, res) => {
+  app.get(`${urlApiResource}`, (req, res) => {
     log(`GET ${req.url}`); log(req.query);
 
     const page = +req.query.page || 1;
@@ -66,7 +66,7 @@ module.exports  = function(app) {
     });
   });
 
-  app.get(`${urlApiBase}/:id`, (req, res) => {
+  app.get(`${urlApiResource}/:id`, (req, res) => {
     log(`GET ${req.url}`); log(req.params);
 
     const people = sql.select(tableName);
@@ -79,7 +79,7 @@ module.exports  = function(app) {
     }
   });
 
-  app.post(`${urlApiBase}`, (req, res) => {
+  app.post(`${urlApiResource}`, (req, res) => {
     log(`POST ${req.url}`); log(req.body);
 
     const person = req.body || {};
@@ -117,7 +117,7 @@ module.exports  = function(app) {
     res.status(201).send(person);
   });
 
-  app.put(`${urlApiBase}/:id`, (req, res) => {
+  app.put(`${urlApiResource}/:id`, (req, res) => {
     log(`PUT ${req.url}`); log(req.params); log(req.body);
 
     const people = sql.select(tableName);
@@ -156,7 +156,7 @@ module.exports  = function(app) {
     res.status(201).send(person);
   });
 
-  app.delete(`${urlApiBase}`, (req, res) => {
+  app.delete(`${urlApiResource}`, (req, res) => {
     log(`DELETE ALL ${req.url}`); log(req.body);
 
     const people = sql.select(tableName);
@@ -181,7 +181,7 @@ module.exports  = function(app) {
     }
   });
 
-  app.delete(`${urlApiBase}/:id`, (req, res) => {
+  app.delete(`${urlApiResource}/:id`, (req, res) => {
     log(`DELETE ${req.url}`); log(req.params);
 
     const people = sql.select(tableName);
