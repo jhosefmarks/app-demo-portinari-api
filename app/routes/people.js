@@ -127,22 +127,17 @@ module.exports  = function(app) {
     log(`PUT ${req.url}`); log(req.params); log(req.body);
 
     const people = sql.select(tableName);
-    log('<<<<<<<<');
-    // log(people)
     const person = sql.find(people, 'id', req.params.id);
 
     log(people.map(p => p.id));
     log(people.find(record => record['id'] == '1581552042308'));
 
     log(person);
-    log('>>>>>>');
 
     if (!person) {
       res.status(404).send(utilsApi.errorGetNotFound(`Person`));
       return;
     }
-
-    log('xxxxxxxxx');
 
     const errors = [];
     const personUpdated = req.body || {};
@@ -182,8 +177,7 @@ module.exports  = function(app) {
       const index = sql.findIndex(people, 'id', person.id);
 
       if (index > -1) {
-        people.splice(index, 1);
-        sql.remove(tableName, 'id', index);
+        sql.remove(tableName, 'id', person.id);
         deletePeople++;
       }
     });
