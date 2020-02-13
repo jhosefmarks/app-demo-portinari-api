@@ -46,7 +46,7 @@ module.exports  = function(app) {
     log(`GET ${req.url}`); log(`PARAMS ${JSON.stringify(req.params)}`); log(`QUERY ${JSON.stringify(req.query)}`);
 
     const records = sql.select(tableName);
-    const record = sql.find(records, 'uf', req.params.id);
+    const record = sql.find(records, 'state', req.params.id);
 
     if (req.query.transform === 'true') {
       record.value = record.uf;
@@ -58,7 +58,7 @@ module.exports  = function(app) {
     if (record) {
       res.send(record);
     } else {
-      res.status(404).send(utilsApi.errorGetNotFound(`City`));
+      res.status(404).send(utilsApi.errorGetNotFound(`State`));
     }
   });
 

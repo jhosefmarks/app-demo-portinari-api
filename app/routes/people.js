@@ -5,7 +5,39 @@ const utilsApi = require('./utils');
 const tableName = 'people';
 const urlApiResource = `${utilsApi.urlApiBase}/${tableName}`;
 
+const dumpMetadata = version => version < 3 ? ++version : 3;
+
 module.exports  = function(app) {
+
+  app.get(`${urlApiResource}/metadata`, (req, res) => {
+    log(`GET ${req.url}`); log(req.params);
+
+    const type = (req.query.type || 'list').toLocaleLowerCase();
+    const version = +req.query.version ? dumpMetadata(+req.query.version) : 1;
+
+    const config = sql.select('config');
+
+    if (config.currentVersionMetadata[type] === version) {
+      // Deixar 200 pra simulação pois o browser entende que deve ser devolvida o mesmo valor da
+      // requisição anterior atrapalhando a simulação
+      // res.status(304).send({ version: config.currentVersionMetadata[type] });
+      res.status(200).send({ version: config.currentVersionMetadata[type] });
+      return;
+    }
+
+    const records = sql.select('metadata');
+    const metadata = sql.where(records, 'type', type);
+    const metadataVersion = sql.find(metadata, 'version', version);
+
+    if (metadataVersion) {
+      // Simula atualização do metadados
+      config.currentVersionMetadata[type] = version;
+
+      res.send(metadataVersion);
+    } else {
+      res.status(404).send(errorGetNotFound(`Metadata`));
+    }
+  });
 
   app.get(`${urlApiResource}`, (req, res) => {
     log(`GET ${req.url}`); log(req.query);
