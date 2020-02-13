@@ -22,10 +22,19 @@ module.exports  = function(app) {
     if (req.query.name) { records = sql.like(records, 'name', req.query.name); }
     if (req.query.uf) { records = sql.like(records, 'uf', req.query.uf); }
 
-    records = records.map(city => ({
-      uf: city.uf,
-      name: city.name
-    }));
+    if (req.query.transform === 'true') {
+      records = records.map(state => ({
+        value: state.uf,
+        label: state.name,
+        uf: state.uf,
+        name: state.name
+      }));
+    } else {
+      records = records.map(state => ({
+        uf: state.uf,
+        name: state.name
+      }));
+    }
 
     res.send({
       hasNext: false,
@@ -33,30 +42,24 @@ module.exports  = function(app) {
     });
   });
 
-  app.get(`${urlApiResource}/data-source`, (req, res) => {
-    log(`GET ${req.url}`); log(req.query);
+  app.get(`${urlApiResource}/:id`, (req, res) => {
+    log(`GET ${req.url}`); log(`PARAMS ${JSON.stringify(req.params)}`); log(`QUERY ${JSON.stringify(req.query)}`);
 
-    const search = req.query.search || req.query.filter;
-    let records = sql.select(tableName);
+    const records = sql.select(tableName);
+    const record = sql.find(records, 'uf', req.params.id);
 
-    if (search) {
-      records = sql.like(records, 'name', search);
-
-      records = utilsApi.removeDuplicates(records, 'uf');
+    if (req.query.transform === 'true') {
+      record.value = record.uf;
+      record.label = record.name;
     }
 
-    if (req.query.name) { records = sql.like(records, 'name', req.query.name); }
-    if (req.query.uf) { records = sql.like(records, 'uf', req.query.uf); }
+    log(record);
 
-    records = records.map(city => ({
-      value: city.uf,
-      label: city.name
-    }));
-
-    res.send({
-      hasNext: false,
-      items: records
-    });
+    if (record) {
+      res.send(record);
+    } else {
+      res.status(404).send(utilsApi.errorGetNotFound(`City`));
+    }
   });
 
 };

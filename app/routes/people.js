@@ -18,13 +18,18 @@ module.exports  = function(app) {
 
     let records = sql.select(tableName);
 
+    if (req.query.order) {
+      const order = req.query.order.replace('city', 'cityName');
+      records = sql.orderby(records, order);
+    }
+
     if (req.query.search) {
       records = [
         ...sql.like(records, 'name', req.query.search),
         ...sql.like(records, 'nickname', req.query.search),
         ...sql.like(records, 'email', req.query.search),
-        ...sql.like(records, 'city', req.query.search),
-        ...sql.where(records, 'genre', req.query.search)
+        ...sql.like(records, 'cityName', req.query.search),
+        ...sql.like(records, 'genreDescription', req.query.search)
       ];
 
       records = utilsApi.removeDuplicates(records);
@@ -40,7 +45,7 @@ module.exports  = function(app) {
       let recordsWithStatus = [];
 
       req.query.status.split(',').forEach(status => {
-        recordsWithStatus = [...recordsWithStatus, ...where(records, 'status', status)]
+        recordsWithStatus = [...recordsWithStatus, ...sql.where(records, 'status', status)]
       });
 
       records = recordsWithStatus;
@@ -48,17 +53,18 @@ module.exports  = function(app) {
 
     const hasNext = records.length > end;
 
-    records = [... records.slice(start, end)];
+    records = [...records.slice(start, end)];
 
     records = records.map(person => ({
       id: person.id,
       name: person.name,
       birthdate: person.birthdate,
       genre: person.genre,
-      city: person.city,
+      city: person.cityName,
       status: person.status,
       nickname: person.nickname,
-      email: person.email}));
+      email: person.email
+    }));
 
     res.send({
       hasNext: hasNext,
@@ -69,11 +75,11 @@ module.exports  = function(app) {
   app.get(`${urlApiResource}/:id`, (req, res) => {
     log(`GET ${req.url}`); log(req.params);
 
-    const people = sql.select(tableName);
-    const person = sql.find(people, 'id', req.params.id);
+    const records = sql.select(tableName);
+    const record = sql.find(records, 'id', req.params.id);
 
-    if (person) {
-      res.send(person);
+    if (record) {
+      res.send(record);
     } else {
       res.status(404).send(utilsApi.errorGetNotFound(`Person`));
     }
@@ -121,12 +127,22 @@ module.exports  = function(app) {
     log(`PUT ${req.url}`); log(req.params); log(req.body);
 
     const people = sql.select(tableName);
+    log('<<<<<<<<');
+    // log(people)
     const person = sql.find(people, 'id', req.params.id);
+
+    log(people.map(p => p.id));
+    log(people.find(record => record['id'] == '1581552042308'));
+
+    log(person);
+    log('>>>>>>');
 
     if (!person) {
       res.status(404).send(utilsApi.errorGetNotFound(`Person`));
       return;
     }
+
+    log('xxxxxxxxx');
 
     const errors = [];
     const personUpdated = req.body || {};
@@ -134,7 +150,7 @@ module.exports  = function(app) {
     if (person.name !== personUpdated.name) { errors.push('Name cannot be updated.'); }
     if (person.email !== personUpdated.email) { errors.push('E-mail cannot be updated.'); }
     if (person.status !== personUpdated.status) { errors.push('Status cannot be updated.'); }
-    if (person.status !== 'Active') { errors.push('Customer inactive cannot be updated.'); }
+    if (person.status !== 'active') { errors.push('Customer inactive cannot be updated.'); }
 
     if (errors.length > 0) {
       const errorMsg = utilsApi.responseMsg(400, 'Bad Request.', 'Invalid resource.');

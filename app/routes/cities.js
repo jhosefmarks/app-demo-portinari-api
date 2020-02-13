@@ -23,11 +23,21 @@ module.exports  = function(app) {
     if (req.query.ibge) { records = sql.like(records, 'ibge', req.query.ibge); }
     if (req.query.state) { records = sql.like(records, 'state', req.query.state); }
 
-    records = records.map(city => ({
-      ibge: city.ibge,
-      name: city.name,
-      state: city.state
-    }));
+    if (req.query.transform == 'true') {
+      records = records.map(city => ({
+        value: city.ibge,
+        label: city.name,
+        ibge: city.ibge,
+        name: city.name,
+        state: city.state
+      }));
+    } else {
+      records = records.map(city => ({
+        ibge: city.ibge,
+        name: city.name,
+        state: city.state
+      }));
+    }
 
     res.send({
       hasNext: false,
@@ -35,32 +45,24 @@ module.exports  = function(app) {
     });
   });
 
-  app.get(`${urlApiResource}/data-source`, (req, res) => {
-    log(`GET ${req.url}`); log(req.query);
+  app.get(`${urlApiResource}/:id`, (req, res) => {
+    log(`GET ${req.url}`); log(`PARAMS ${JSON.stringify(req.params)}`); log(`QUERY ${JSON.stringify(req.query)}`);
 
-    const search = req.query.search || req.query.filter;
-    let records = sql.select(tableName);
+    const records = sql.select(tableName);
+    const record = sql.find(records, 'ibge', req.params.id);
 
-    if (search) {
-      records = sql.like(records, 'name', search);
-
-      records = utilsApi.removeDuplicates(records, 'ibge');
+    if (req.query.transform === 'true') {
+      record.value = record.ibge;
+      record.label = record.name;
     }
 
-    if (req.query.name) { records = sql.like(records, 'name', req.query.name); }
-    if (req.query.ibge) { records = sql.like(records, 'ibge', req.query.ibge); }
-    if (req.query.state) { records = sql.like(records, 'state', req.query.state); }
+    log(record);
 
-    records = records.map(city => ({
-      value: city.ibge,
-      label: city.name,
-      state: city.state
-    }));
-
-    res.send({
-      hasNext: false,
-      items: records
-    });
+    if (record) {
+      res.send(record);
+    } else {
+      res.status(404).send(utilsApi.errorGetNotFound(`City`));
+    }
   });
 
 };
