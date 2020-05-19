@@ -4,7 +4,13 @@ let db;
 
 const initDB = () => db = JSON.parse(JSON.stringify(database));
 
-const clone = obj => JSON.parse(JSON.stringify(obj));
+const clone = obj => {
+  try {
+    return JSON.parse(JSON.stringify(obj));
+  } catch {
+    return undefined;
+  }
+};
 
 const select = table => clone(db[table]);
 const like = (records, field, value) => clone(records.filter(record => record[field] && record[field].toLocaleLowerCase().includes(value.toLocaleLowerCase())));

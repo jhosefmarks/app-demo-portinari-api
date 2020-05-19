@@ -76,7 +76,11 @@ module.exports  = function(app) {
     if (req.query.status) {
       let recordsWithStatus = [];
 
-      req.query.status.split(',').forEach(status => {
+      const statusArr = typeof req.query.status === 'string'
+        ? req.query.status.split(',')
+        : req.query.status;
+
+      statusArr.forEach(status => {
         recordsWithStatus = [...recordsWithStatus, ...sql.where(records, 'status', status)]
       });
 
