@@ -7,7 +7,7 @@ const initDB = () => db = JSON.parse(JSON.stringify(database));
 const clone = obj => {
   try {
     return JSON.parse(JSON.stringify(obj));
-  } catch {
+  } catch(err) {
     return undefined;
   }
 };
