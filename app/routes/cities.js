@@ -22,6 +22,7 @@ module.exports  = function(app) {
     if (req.query.name) { records = sql.like(records, 'name', req.query.name); }
     if (req.query.ibge) { records = sql.like(records, 'ibge', req.query.ibge); }
     if (req.query.state) { records = sql.like(records, 'state', req.query.state); }
+    if (req.query.uf) { records = sql.like(records, 'uf', req.query.uf); }
 
     if (req.query.transform == 'true') {
       records = records.map(city => ({
@@ -37,6 +38,11 @@ module.exports  = function(app) {
         name: city.name,
         state: city.state
       }));
+    }
+
+    if (records.length === 0) {
+      res.status(404).send(utilsApi.errorGetNotFound(`City`));
+      return;
     }
 
     res.send({
