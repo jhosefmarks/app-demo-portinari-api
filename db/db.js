@@ -9,7 +9,8 @@ const metadata = [
       { property: 'city' }
     ]
   }, {
-    version: 2, type: 'list', title: '(M) Lista de cientes v2', breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Cliente' } ] },
+    version: 2, type: 'list', title: '(M) Lista de cientes v2',
+    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Cliente' } ] },
     actions: { detail: 'metadata-customers/view/:id', edit: 'metadata-customers/edit/:id', new: 'metadata-customers/new', remove: true },
     fields: [
       { property: 'id', key: true, visible: false },
@@ -19,7 +20,8 @@ const metadata = [
       { property: 'city' }
     ]
   }, {
-    version: 3, type: 'list', autoRouter: true, title: '(M) Lista de cientes v3', breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Cliente' } ] },
+    version: 3, type: 'list', autoRouter: true, title: '(M) Lista de cientes v3',
+    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Cliente' } ] },
     actions: {
       detail: 'metadata-customers/view/:id',
       duplicate: 'metadata-customers/new',
@@ -74,7 +76,7 @@ const metadata = [
   }, {
     version: 2, type: 'detail', title: '(M) Detalhes do cliente v2',
     actions: { back: false, edit: 'metadata-customers/view/:id' },
-    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: 'metadata-customers/' }, { label: 'Detalhes' } ] },
+    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: '/metadata-customers/' }, { label: 'Detalhes' } ] },
     fields: [
       { property: 'id', key: true },
       { property: 'status', tag: true },
@@ -93,7 +95,7 @@ const metadata = [
   }, {
     version: 3, type: 'detail', title: '(M) Detalhes do cliente v3',
     actions: { back: 'metadata-customers/',  edit: 'metadata-customers/edit/:id', remove: 'metadata-customers/' },
-    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: 'metadata-customers/' }, { label: 'Detalhes' } ] },
+    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: '/metadata-customers/' }, { label: 'Detalhes' } ] },
     fields: [
       { property: 'id', visible: false, key: true },
       { property: 'name', label: 'Nome', divider: 'Dados pessoais', gridColumns: 5 },
@@ -124,7 +126,7 @@ const metadata = [
   }, {
     version: 2, type: 'create', title: '(M) Novo cliente v2',
     actions: { save: 'metadata-customers/', cancel: 'metadata-customers/' },
-    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: 'metadata-customers/' }, { label: 'Novo' } ] },
+    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: '/metadata-customers/' }, { label: 'Novo' } ] },
     fields: [
       { property: 'id', key: true },
       { property: 'status', options: ['active', 'inactive'] },
@@ -143,7 +145,7 @@ const metadata = [
   }, {
     version: 3, type: 'create', title: '(M) Novo cliente v3',
     actions: { save: 'metadata-customers/', saveNew: true, cancel: 'metadata-customers/' },
-    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: 'metadata-customers/' }, { label: 'Novo' } ] },
+    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: '/metadata-customers/' }, { label: 'Novo' } ] },
     fields: [
       { property: 'name', label: 'Nome completo', divider: 'Dados pessoais', required: true, gridColumns: 5 },
       { property: 'email', label: 'E-mail', required: true, gridColumns: 5 },
@@ -177,7 +179,7 @@ const metadata = [
   }, {
     version: 2, type: 'edit', title: '(M) Editando cliente v2',
     actions: { save: 'metadata-customers/', cancel: 'metadata-customers/' },
-    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: 'metadata-customers/' }, { label: 'Editando' } ] },
+    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: '/metadata-customers/' }, { label: 'Editando' } ] },
     fields: [
       { property: 'id', label: 'User ID', key: true, disabled: true },
       { property: 'status', options: ['active', 'inactive'] },
@@ -199,7 +201,7 @@ const metadata = [
   }, {
     version: 3, type: 'edit', title: '(M) Editando cliente v3',
     actions: { save: 'metadata-customers/', saveNew: 'metadata-new/', cancel: 'metadata-customers/' },
-    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: 'metadata-customers/' }, { label: 'Editando' } ] },
+    breadcrumb: { items: [ { label: 'Início', link: '/' }, { label: 'Clientes', link: '/metadata-customers/' }, { label: 'Editando' } ] },
     fields: [
       { property: 'name', label: 'Nome completo', divider: 'Dados pessoais', disabled: true, gridColumns: 5 },
       { property: 'email', label: 'E-mail', disabled: true, gridColumns: 5 },
